@@ -1,3 +1,12 @@
+'''
+Description: 
+Version: 
+Autor: Lizn
+Date: 2022-02-28 11:07:38
+LastEditors: Please set LastEditors
+LastEditTime: 2022-03-01 12:59:16
+'''
+
 import glob
 import random
 import os
@@ -17,7 +26,7 @@ class ImageDataset(Dataset):
     def __init__(self, root, hr_shape):
         hr_height, hr_width = hr_shape
         # Transforms for low resolution images and high resolution images
-        self.lr_transform = transforms.Compose(
+        self.lr_transform = transforms.Compose(##pytorch中的图像预处理包，将几个步骤合并
             [
                 transforms.Resize((hr_height // 4, hr_height // 4), Image.BICUBIC),
                 transforms.ToTensor(),
@@ -33,9 +42,13 @@ class ImageDataset(Dataset):
         )
 
         self.files = sorted(glob.glob(root + "/*.*"))
+        #sorted() 排序
+        #glob.glob() 获得路径.
+        
 
     def __getitem__(self, index):
         img = Image.open(self.files[index % len(self.files)])
+        #Image.open(a)  a:dir of image 
         img_lr = self.lr_transform(img)
         img_hr = self.hr_transform(img)
 

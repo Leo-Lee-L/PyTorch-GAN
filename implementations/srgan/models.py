@@ -5,9 +5,10 @@ from torchvision.models import vgg19
 import math
 
 
-class FeatureExtractor(nn.Module):
+class FeatureExtractor(nn.Module): 
     def __init__(self):
         super(FeatureExtractor, self).__init__()
+        #super().__init__()  inherit the method of father class 
         vgg19_model = vgg19(pretrained=True)
         self.feature_extractor = nn.Sequential(*list(vgg19_model.features.children())[:18])
 
