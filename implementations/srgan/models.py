@@ -4,14 +4,17 @@ import torch
 from torchvision.models import vgg19
 import math
 
-
+#TODO:vgg19(pytorch document or d2l)
 class FeatureExtractor(nn.Module): 
     def __init__(self):
         super(FeatureExtractor, self).__init__()
         #super().__init__()  inherit the method of father class 
         vgg19_model = vgg19(pretrained=True)
+        #vgg 块的使用导致网络定义的相当简洁，使用快可以有效设计复杂的网络
+        #预训练通过源数据集到目的数据集的映射，完成迁移学习的目的.
         self.feature_extractor = nn.Sequential(*list(vgg19_model.features.children())[:18])
-
+        #神经网络模块将按照在传入构造器的顺序依次被添加到计算图中执行，
+        # 同时以神经网络模块为元素的有序字典也可以作为传入参数。
     def forward(self, img):
         return self.feature_extractor(img)
 
@@ -21,8 +24,11 @@ class ResidualBlock(nn.Module):
         super(ResidualBlock, self).__init__()
         self.conv_block = nn.Sequential(
             nn.Conv2d(in_features, in_features, kernel_size=3, stride=1, padding=1),
+            #卷积层
             nn.BatchNorm2d(in_features, 0.8),
+            #BatchNorm2d() 是使我们一批的feature_map满足均值为0,方差为1的分布规律.
             nn.PReLU(),
+            #带参数的ReLU激活函数.
             nn.Conv2d(in_features, in_features, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(in_features, 0.8),
         )
@@ -30,7 +36,7 @@ class ResidualBlock(nn.Module):
     def forward(self, x):
         return x + self.conv_block(x)
 
-
+#TODO:ResNet(pytorch or d2l)
 class GeneratorResNet(nn.Module):
     def __init__(self, in_channels=3, out_channels=3, n_residual_blocks=16):
         super(GeneratorResNet, self).__init__()
