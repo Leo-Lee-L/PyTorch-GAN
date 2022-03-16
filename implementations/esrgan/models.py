@@ -13,7 +13,7 @@ class FeatureExtractor(nn.Module):
 
     def forward(self, img):
         return self.vgg19_54(img)
-
+#The main behavior of neural network is forward()
 
 class DenseResidualBlock(nn.Module):
     """

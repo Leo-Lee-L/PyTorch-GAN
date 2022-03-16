@@ -64,6 +64,7 @@ feature_extractor = FeatureExtractor().to(device)
 
 # Set feature extractor to inference mode
 feature_extractor.eval()
+# 将字符串当成有效的表达式 来求值 并 返回计算结果
 
 # Losses
 criterion_GAN = torch.nn.BCEWithLogitsLoss().to(device)

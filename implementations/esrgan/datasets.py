@@ -1,3 +1,6 @@
+'''
+LastEditTime: 2022-03-10 21:49:43
+'''
 import glob
 import random
 import os
@@ -17,18 +20,23 @@ def denormalize(tensors):
     """ Denormalizes image tensors using mean and std """
     for c in range(3):
         tensors[:, c].mul_(std[c]).add_(mean[c])
+        #mul ".X"
     return torch.clamp(tensors, 0, 255)
+    #将输入input张量每个元素的夹紧到区间 [min,max][min,max]，并返回结果到一个新张量。
 
 
 class ImageDataset(Dataset):
     def __init__(self, root, hr_shape):
         hr_height, hr_width = hr_shape
         # Transforms for low resolution images and high resolution images
-        self.lr_transform = transforms.Compose(
+        self.lr_transform = transforms.Compose(#contribute with
             [
                 transforms.Resize((hr_height // 4, hr_height // 4), Image.BICUBIC),
+                #"//" is a division method, return a integer number.
                 transforms.ToTensor(),
+                #convert  image from "numpy" or "PIL" to "tensor" 
                 transforms.Normalize(mean, std),
+                #divide the L2(范数)
             ]
         )
         self.hr_transform = transforms.Compose(
